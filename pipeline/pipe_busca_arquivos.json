@@ -19,13 +19,16 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"useBinaryTransfer": true,
-							"deleteFilesAfterCompletion": false,
 							"disableChunking": false
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings"
+							"type": "BinaryReadSettings",
+							"compressionProperties": {
+								"type": "ZipDeflateReadSettings",
+								"preserveZipFileNameAsFolder": false
+							}
 						}
 					},
 					"sink": {
@@ -51,7 +54,7 @@
 						"referenceName": "ds_binary",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": "202401"
+							"filename": "202401file"
 						}
 					}
 				]

@@ -18,11 +18,15 @@
 		"typeProperties": {
 			"location": {
 				"type": "FtpServerLocation",
-				"fileName": "*.7z",
+				"fileName": "CAGEDEXC202401.7z",
 				"folderPath": {
 					"value": "@concat(dataset().ano,'/', dataset().competencia)",
 					"type": "Expression"
 				}
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Fastest"
 			}
 		}
 	}
