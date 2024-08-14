@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-cursoudemy-meuchi"
+		},
+		"ls_azuresql_password": {
+			"value": ""
+		},
+		"ls_datalake_accountKey": {
+			"value": ""
+		},
+		"ls_azuresql_properties_typeProperties_server": {
+			"value": "sql-cursoudemy-meuchi.database.windows.net"
+		},
+		"ls_azuresql_properties_typeProperties_database": {
+			"value": "sqldb-cursoudemy-meuchi"
+		},
+		"ls_azuresql_properties_typeProperties_userName": {
+			"value": "lais"
+		},
+		"ls_datalake_properties_typeProperties_url": {
+			"value": "https://dlscursoudemymeuchi.dfs.core.windows.net/"
+		},
+		"ftpserver_caged_properties_typeProperties_host": {
+			"value": "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/"
+		}
+	}
+}
