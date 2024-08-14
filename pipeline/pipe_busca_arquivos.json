@@ -21,14 +21,11 @@
 							"type": "FtpReadSettings",
 							"recursive": true,
 							"useBinaryTransfer": true,
-							"disableChunking": false
+							"deleteFilesAfterCompletion": false,
+							"disableChunking": true
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings",
-							"compressionProperties": {
-								"type": "ZipDeflateReadSettings",
-								"preserveZipFileNameAsFolder": false
-							}
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -41,12 +38,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_arquivos_ftp",
-						"type": "DatasetReference",
-						"parameters": {
-							"ano": "2024",
-							"competencia": "202401"
-						}
+						"referenceName": "ds_ftp_binary",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
@@ -54,7 +47,8 @@
 						"referenceName": "ds_binary",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": "202401file"
+							"container": "binaryfiles",
+							"fileName": "CAGEDEXC202401copied"
 						}
 					}
 				]
