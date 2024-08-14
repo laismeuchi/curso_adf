@@ -23,7 +23,7 @@
 		"ls_datalake_properties_typeProperties_url": {
 			"value": "https://dlscursoudemymeuchi.dfs.core.windows.net/"
 		},
-		"ftpserver_caged_properties_typeProperties_host": {
+		"ls_ftp_caged_properties_typeProperties_host": {
 			"value": "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/"
 		}
 	}

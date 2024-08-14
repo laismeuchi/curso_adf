@@ -31,7 +31,7 @@
 			"type": "string",
 			"defaultValue": "https://dlscursoudemymeuchi.dfs.core.windows.net/"
 		},
-		"ftpserver_caged_properties_typeProperties_host": {
+		"ls_ftp_caged_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/"
 		}
@@ -133,14 +133,14 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ftpserver_caged')]",
+			"name": "[concat(parameters('factoryName'), '/ls_ftp_caged')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "FtpServer",
 				"typeProperties": {
-					"host": "[parameters('ftpserver_caged_properties_typeProperties_host')]",
+					"host": "[parameters('ls_ftp_caged_properties_typeProperties_host')]",
 					"port": 21,
 					"enableSsl": false,
 					"enableServerCertificateValidation": false,
@@ -304,6 +304,43 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_binary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_datalake')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_excel_fixo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -397,6 +434,29 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_ftp_binary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_ftp_caged",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"fileName": "CAGEDEXC202401.7z",
+						"folderPath": "2024/202401"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_ftp_caged')]"
 			]
 		},
 		{
@@ -602,108 +662,75 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_arquivos_ftp')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/pipe_busca_arquivos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ftpserver_caged",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"ano": {
-						"type": "string"
-					},
-					"competencia": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"fileName": "CAGEDEXC202401.7z",
-						"folderPath": {
-							"value": "@concat(dataset().ano,'/', dataset().competencia)",
-							"type": "Expression"
-						}
-					},
-					"compression": {
-						"type": "ZipDeflate",
-						"level": "Fastest"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ftpserver_caged')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_generico_binary')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ftpserver_caged",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"ano": {
-						"type": "string"
-					},
-					"competencia": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"fileName": {
-							"value": "@dataset().competencia",
-							"type": "Expression"
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"folderPath": {
-							"value": "@dataset().ano",
-							"type": "Expression"
-						}
-					},
-					"compression": {
-						"type": "ZipDeflate"
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": true,
+									"useBinaryTransfer": true,
+									"deleteFilesAfterCompletion": false,
+									"disableChunking": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_ftp_binary",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_binary",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "binaryfiles",
+									"fileName": "CAGEDEXC202401copied"
+								}
+							}
+						]
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "testes"
+				},
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ftpserver_caged')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_binary')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_datalake",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "binaryfiles"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_datalake')]"
+				"[concat(variables('factoryId'), '/datasets/ds_ftp_binary')]",
+				"[concat(variables('factoryId'), '/datasets/ds_binary')]"
 			]
 		},
 		{
