@@ -1,5 +1,5 @@
 {
-	"name": "ler_arquivos_ftp",
+	"name": "ds_arquivos_ftp",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ftpserver_caged",

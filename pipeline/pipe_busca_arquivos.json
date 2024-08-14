@@ -35,13 +35,17 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ler_arquivos_ftp",
-						"type": "DatasetReference"
+						"referenceName": "ds_arquivos_ftp",
+						"type": "DatasetReference",
+						"parameters": {
+							"ano": "2024",
+							"competencia": "202401"
+						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_generico_binary",
+						"referenceName": "ds_arquivos_ftp",
 						"type": "DatasetReference"
 					}
 				]
