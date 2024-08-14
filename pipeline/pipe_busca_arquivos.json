@@ -29,7 +29,10 @@
 						}
 					},
 					"sink": {
-						"type": "BinarySink"
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
 					},
 					"enableStaging": false
 				},
@@ -45,8 +48,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_arquivos_ftp",
-						"type": "DatasetReference"
+						"referenceName": "ds_binary",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": "202401"
+						}
 					}
 				]
 			}

@@ -18,12 +18,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "FtpServerLocation",
-				"fileName": {
-					"value": "@dataset().competencia",
-					"type": "Expression"
-				},
+				"fileName": "*.7z",
 				"folderPath": {
-					"value": "@dataset().ano",
+					"value": "@concat(dataset().ano,'/', dataset().competencia)",
 					"type": "Expression"
 				}
 			}
