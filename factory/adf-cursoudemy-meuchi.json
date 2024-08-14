@@ -1,0 +1,9 @@
+{
+	"name": "adf-cursoudemy-meuchi",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b073414b-38de-492a-af66-afd4a5b2e8d0",
+		"tenantId": "66435bee-d7f3-419a-96d4-c8d20aa3a890"
+	}
+}
