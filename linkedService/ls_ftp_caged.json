@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "FtpServer",
 		"typeProperties": {
-			"host": "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO CAGED",
+			"host": "ftp://ftp.mtps.gov.br/",
 			"port": 21,
 			"enableSsl": false,
 			"enableServerCertificateValidation": false,
