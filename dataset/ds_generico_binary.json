@@ -1,0 +1,35 @@
+{
+	"name": "ds_generico_binary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ftpserver_caged",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ano": {
+				"type": "string"
+			},
+			"competencia": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"fileName": {
+					"value": "@dataset().competencia",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ano",
+					"type": "Expression"
+				}
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
