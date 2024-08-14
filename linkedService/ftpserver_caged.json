@@ -1,0 +1,14 @@
+{
+	"name": "ftpserver_caged",
+	"properties": {
+		"annotations": [],
+		"type": "FtpServer",
+		"typeProperties": {
+			"host": "ftp://ftp.mtps.gov.br/pdet/microdados/NOVO%20CAGED/",
+			"port": 21,
+			"enableSsl": false,
+			"enableServerCertificateValidation": false,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
