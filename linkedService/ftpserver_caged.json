@@ -1,14 +1,6 @@
 {
 	"name": "ftpserver_caged",
 	"properties": {
-		"parameters": {
-			"ano": {
-				"type": "string"
-			},
-			"competencia": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "FtpServer",
 		"typeProperties": {
